@@ -26,6 +26,3 @@
   </form>
 
   <p>Already have an account? <a href="index.php?action=login">Login here</a></p>
-</body>
-
-</html>

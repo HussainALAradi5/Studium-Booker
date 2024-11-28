@@ -1,7 +1,8 @@
-<?php
-require_once './model/user.php';  // Contains user-related functions like register, login, etc.
-require_once './auth/security.php'; // Contains validation functions
 
+<?php
+require_once './model/user.php';
+require_once './auth/security.php';
+include('./views/headers.php');
 // Handle actions (by default, show home page)
 $action = $_GET['action'] ?? 'home';
 
@@ -81,4 +82,5 @@ switch ($action) {
   default:
     include 'views/home.php'; // Show home page by default
     break;
-}
+} ?>
+<?php include('./views/footer.php'); ?>

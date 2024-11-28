@@ -1,0 +1,30 @@
+.navbar {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: teal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar li {
+  margin: 10px 15px;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar a:hover {
+  background-color: #007777;
+}
+
+.navbar a:active {
+  background-color: #005f5f;
+}
