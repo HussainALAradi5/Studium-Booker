@@ -4,18 +4,17 @@ try {
   $host = "localhost";
   $dbname = "studium_booker";
   $user = "root";
+  $password = '';  // Set your MySQL password here, or use '' if no password is required
 
   // Connect to MySQL
-  $pdo = new PDO("mysql:host=$host", $user);
+  $pdo = new PDO("mysql:host=$host", $user, $password);
   $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
   // Create database if it does not exist
   $pdo->exec("CREATE DATABASE IF NOT EXISTS $dbname");
   $pdo->exec("USE $dbname");
 
-  // Define table creation queries in variables
 
-  // User table (must be created first since it's referenced by other tables)
   $user = "
     CREATE TABLE IF NOT EXISTS user (
         user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -39,7 +38,7 @@ try {
         location VARCHAR(255) NOT NULL,
         price_per_hour DECIMAL(10, 2) NOT NULL,
         is_occupied BOOLEAN NOT NULL DEFAULT 0,
-        occupied_by INT,
+        occupied_by INT, 
         FOREIGN KEY (occupied_by) REFERENCES user(user_id)
     )";
 
@@ -61,7 +60,6 @@ try {
       FOREIGN KEY (user_id) REFERENCES user(user_id),
       FOREIGN KEY (studium_id) REFERENCES studium(studium_id)
   )";
-
 
   // Execute the query for creating the reservation table
   $pdo->exec($reservation);
