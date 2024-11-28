@@ -1,91 +1,123 @@
 <?php
-require_once '../db/database.php'; // Ensure database connection is established
+require_once '../auth/security.php'; // Include security functions for validation
 
-// Function to register a user
+// Register a new user
 function register_user($user_name, $email, $password)
 {
-  global $pdo;
+  try {
+    // Validate and sanitize inputs using security.php
+    list($user_name, $email, $password) = validate_and_sanitize_user_data($user_name, $email, $password);
 
-  // Clean inputs
-  $user_name = secure_input($user_name);
-  $email = secure_input(strtolower($email));
+    // Check if user already exists (using function from security.php)
+    if (user_exists($email, $user_name)) {
+      return ['success' => false, 'message' => 'User already exists.'];
+    }
 
-  // Check if user already exists
-  $sql = "SELECT COUNT(*) FROM user WHERE LOWER(email) = ? OR LOWER(user_name) = ?";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$email, strtolower($user_name)]);
+    // Hash the password
+    $password_digest = password_hash($password, PASSWORD_BCRYPT);
 
-  if ($stmt->fetchColumn() > 0) {
-    return ['success' => false, 'message' => 'User already exists.'];
+    // SQL query to insert new user
+    $sql = "INSERT INTO user (user_name, email, password_digest) VALUES (?, ?, ?)";
+
+    // Prepare and execute the query
+    global $pdo;
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$user_name, $email, $password_digest]);
+
+    return ['success' => true, 'message' => 'User registered successfully.'];
+  } catch (PDOException $e) {
+    return ['success' => false, 'message' => $e->getMessage()];
   }
-
-  // Hash the password
-  $password_digest = password_hash($password, PASSWORD_BCRYPT);
-
-  // Insert new user
-  $sql = "INSERT INTO user (user_name, email, password_digest) VALUES (?, ?, ?)";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$user_name, $email, $password_digest]);
-
-  return ['success' => true, 'message' => 'User registered successfully.'];
 }
 
-// Function to login a user
+// Login user with email or username
 function login_user($identifier, $password)
 {
-  global $pdo;
+  try {
+    // Secure the input identifier
+    $identifier = secure_input(strtolower($identifier));
 
-  // Clean input
-  $identifier = secure_input(strtolower($identifier));
+    // Fetch user based on email or username (using function from security.php)
+    $user = fetch_user_by_identifier($identifier);
 
-  // Fetch user by email or username
-  $sql = "SELECT * FROM user WHERE LOWER(email) = ? OR LOWER(user_name) = ? AND is_active = 1";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$identifier, $identifier]);
-  $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Check if user exists and verify password (using function from security.php)
+    if (!$user || !verify_password($password, $user['password_digest'])) {
+      return ['success' => false, 'message' => 'Invalid login credentials.'];
+    }
 
-  if (!$user || !password_verify($password, $user['password_digest'])) {
-    return ['success' => false, 'message' => 'Invalid login credentials.'];
+    // Set cookies for the authenticated user
+    set_user_cookie($user['user_id'], $user['is_admin']);
+
+    return ['success' => true, 'message' => 'Login successful.', 'user' => $user];
+  } catch (PDOException $e) {
+    return ['success' => false, 'message' => $e->getMessage()];
   }
-
-  // Set session or cookies for authentication
-  set_user_cookie($user['user_id'], $user['is_admin']);
-
-  return ['success' => true, 'message' => 'Login successful.', 'user' => $user];
 }
 
-// Function to get user details based on the user_id from cookies
-function get_user_details()
-{
-  if (!isset($_COOKIE['user_id'])) {
-    return null;
-  }
-
-  global $pdo;
-
-  // Get the user ID from the cookie
-  $user_id = secure_input($_COOKIE['user_id']);
-  $sql = "SELECT * FROM user WHERE user_id = ? AND is_active = 1";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$user_id]);
-
-  return $stmt->fetch(PDO::FETCH_ASSOC);
-}
-
-// Function to delete a user (soft delete)
+// Soft delete user (set is_active to false)
 function delete_user($user_id)
 {
-  global $pdo;
+  try {
+    // SQL query to soft delete a user
+    $sql = "UPDATE user SET is_active = 0 WHERE user_id = ?";
 
-  // Mark user as inactive (soft delete)
-  $sql = "UPDATE user SET is_active = 0 WHERE user_id = ?";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$user_id]);
+    // Prepare and execute the query
+    global $pdo;
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$user_id]);
 
-  return ['success' => true, 'message' => 'User deleted successfully.'];
+    return ['success' => true, 'message' => 'User deleted successfully.'];
+  } catch (PDOException $e) {
+    return ['success' => false, 'message' => $e->getMessage()];
+  }
 }
 
-// Function to set user authentication cookies
+// Get details of a specific user (using user_id)
+function get_user_details($user_id = null)
+{
+  try {
+    // If no user_id is provided, get it from cookies
+    if ($user_id === null && isset($_COOKIE['user_id'])) {
+      $user_id = secure_input($_COOKIE['user_id']);
+    }
+
+    // If there's no user_id, return null (no user logged in)
+    if (!$user_id) {
+      return null;
+    }
+
+    // SQL query to fetch user details
+    $sql = "SELECT * FROM user WHERE user_id = ? AND is_active = 1";
+
+    // Prepare and execute the query
+    global $pdo;
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$user_id]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+  } catch (PDOException $e) {
+    return null;
+  }
+}
+
+// Get details of all users (active users only)
+function get_all_users()
+{
+  try {
+    global $pdo;
+    $sql = "SELECT * FROM user WHERE is_active = 1";
+
+    // Prepare and execute the query
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  } catch (PDOException $e) {
+    return ['success' => false, 'message' => $e->getMessage()];
+  }
+}
+
+// Set authentication cookies for the user
 function set_user_cookie($user_id, $is_admin)
 {
   setcookie("user_id", $user_id, time() + 3600, "/", "", false, true);
