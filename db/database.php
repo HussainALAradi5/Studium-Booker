@@ -15,7 +15,21 @@ try {
 
   // Define table creation queries in variables
 
-  // Studium table
+  // User table (must be created first since it's referenced by other tables)
+  $user = "
+    CREATE TABLE IF NOT EXISTS user (
+        user_id INT AUTO_INCREMENT PRIMARY KEY,
+        user_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        password_digest VARCHAR(255) NOT NULL,
+        is_admin BOOLEAN NOT NULL DEFAULT 0,
+        is_active BOOLEAN NOT NULL DEFAULT 1
+    )";
+
+  // Execute the query for creating the user table
+  $pdo->exec($user);
+
+  // Studium table (foreign key to user table should be valid now)
   $studium = "
     CREATE TABLE IF NOT EXISTS studium (
         studium_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,34 +43,30 @@ try {
         FOREIGN KEY (occupied_by) REFERENCES user(user_id)
     )";
 
-  // User table
-  $user = "
-    CREATE TABLE IF NOT EXISTS user (
-        user_id INT AUTO_INCREMENT PRIMARY KEY,
-        user_name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        password_digest VARCHAR(255) NOT NULL,
-        is_admin BOOLEAN NOT NULL DEFAULT 0,
-        is_active BOOLEAN NOT NULL DEFAULT 1
-    )";
+  // Execute the query for creating the studium table
+  $pdo->exec($studium);
 
   // Reservation table
   $reservation = "
   CREATE TABLE IF NOT EXISTS reservation (
       user_id INT NOT NULL,
       studium_id INT NOT NULL,
-      width DECIMAL(10, 2) AS (SELECT width FROM studium WHERE studium_id = reservation.studium_id),
-      height DECIMAL(10, 2) AS (SELECT height FROM studium WHERE studium_id = reservation.studium_id),
       total_area DECIMAL(10, 2),
       start_at DATETIME NOT NULL,  
       end_at DATETIME NOT NULL,
       total_occupied_time DECIMAL(10, 2),
-      price_per_hour DECIMAL(10, 2) AS (SELECT price_per_hour FROM studium WHERE studium_id = reservation.studium_id),
+      price_per_hour DECIMAL(10, 2),
       total_price DECIMAL(10, 2),
       PRIMARY KEY (user_id, studium_id),
       FOREIGN KEY (user_id) REFERENCES user(user_id),
       FOREIGN KEY (studium_id) REFERENCES studium(studium_id)
   )";
+
+
+  // Execute the query for creating the reservation table
+  $pdo->exec($reservation);
+
+  // Rating table
   $rating = "
     CREATE TABLE IF NOT EXISTS rating (
         rate_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -68,13 +78,8 @@ try {
         FOREIGN KEY (rated_by_user) REFERENCES user(user_id)
     )";
 
-  // Execute the queries to create the tables
-  $pdo->exec($studium);
-  $pdo->exec($user);
-  $pdo->exec($reservation);
+  // Execute the query for creating the rating table
   $pdo->exec($rating);
-
-  echo "Database and tables created successfully.";
 } catch (PDOException $e) {
   echo "Error: " . $e->getMessage();
 }
