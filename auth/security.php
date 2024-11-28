@@ -1,5 +1,5 @@
 <?php
-require_once '../db/database.php'; // Ensure database connection is established
+require_once './db/database.php'; // Ensure database connection is established
 
 // Secure input function to sanitize user input
 function secure_input($input)

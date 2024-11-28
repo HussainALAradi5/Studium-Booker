@@ -1,5 +1,5 @@
 <?php
-require_once '../auth/security.php'; // Include security functions for validation
+require_once './auth/security.php'; // Include security functions for validation
 
 // Register a new user
 function register_user($user_name, $email, $password)
@@ -117,9 +117,52 @@ function get_all_users()
   }
 }
 
+function edit_user($user_id, $new_user_name, $new_email, $new_password = null)
+{
+  global $pdo;
+
+  try {
+    // Secure the inputs
+    $new_user_name = secure_input($new_user_name);
+    $new_email = secure_input(strtolower($new_email));
+
+    // Check if the new username or email already exists (to prevent duplication)
+    if (user_exists($new_email, $new_user_name)) {
+      return ['success' => false, 'message' => 'Username or email already exists.'];
+    }
+
+    // Update password if it's provided
+    $sql = "UPDATE user SET user_name = ?, email = ?";
+    $params = [$new_user_name, $new_email];
+
+    if ($new_password) {
+      $password_digest = password_hash($new_password, PASSWORD_BCRYPT);
+      $sql .= ", password_digest = ?";
+      $params[] = $password_digest;
+    }
+
+    $sql .= " WHERE user_id = ?"; // Only update for the current user
+    $params[] = $user_id;
+
+    // Prepare and execute the update query
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+
+    return ['success' => true, 'message' => 'User details updated successfully.'];
+  } catch (PDOException $e) {
+    return ['success' => false, 'message' => $e->getMessage()];
+  }
+}
+
 // Set authentication cookies for the user
 function set_user_cookie($user_id, $is_admin)
 {
   setcookie("user_id", $user_id, time() + 3600, "/", "", false, true);
   setcookie("is_admin", $is_admin, time() + 3600, "/", "", false, true);
+}
+
+function logout_user()
+{
+  setcookie("user_id", "", time() - 3600, "/", "", false, true);
+  setcookie("is_admin", "", time() - 3600, "/", "", false, true);
 }
