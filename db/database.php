@@ -53,6 +53,7 @@ try {
         FOREIGN KEY (studium_id) REFERENCES studium(studium_id)
     )");
 
+  // Rating table
   $pdo->exec("CREATE TABLE IF NOT EXISTS rating (
         rate_id INT AUTO_INCREMENT PRIMARY KEY,
         rate INT NOT NULL,
