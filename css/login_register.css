@@ -13,11 +13,13 @@ h2 {
 
 form {
   background-color: white;
-  padding: 20px;
+
+  padding: 50px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   max-width: 400px;
-  margin: 0 auto;
+  margin: 50px auto;
+  align-items: center;
 }
 
 label {
@@ -38,24 +40,24 @@ input[type="password"] {
 }
 
 input:focus {
-  border-color: #4169e1; /* Royal Blue */
+  border-color: #4169e1;
   box-shadow: 0 0 8px rgba(65, 105, 225, 0.5);
 }
 
 button {
-  background-color: #4169e1; /* Royal Blue */
-  color: white;
+  background-color: royalblue;
+  color: whitesmoke;
   border: none;
   padding: 12px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
   width: 100%;
-  transition: background-color 0.3s ease;
+  transition: background-color 1.5s ease;
 }
 
 button:hover {
-  background-color: #315ba9;
+  background-color: midnightblue;
 }
 
 button:active {
@@ -68,12 +70,12 @@ p {
 }
 
 a {
-  color: #008080; /* Teal */
+  color: #008080;
   text-decoration: none;
 }
 
 a:hover {
-  color: #191970; /* Midnight Blue */
+  color: #191970;
 }
 
 /* Responsive Design */
