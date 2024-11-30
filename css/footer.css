@@ -1,0 +1,27 @@
+footer {
+  background-color: teal;
+  padding: 20px;
+  text-align: center;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin-top: 30px;
+}
+
+footer p {
+  font-size: 14px;
+  color: #333;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+footer p {
+  margin: 0;
+}
