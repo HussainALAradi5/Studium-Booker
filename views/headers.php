@@ -13,14 +13,17 @@
     <nav>
       <ul class="navbar">
         <li><a href="index.php?action=home">Home</a></li>
-        <li><a href="index.php?action=register">Register</a></li>
-        <li><a href="index.php?action=login">Login</a></li>
 
-        <?php if (isset($_COOKIE['user_id'])):
+        <?php if (!isset($_COOKIE['user_id'])): // Show Register and Login if user is not logged in 
+        ?>
+          <li><a href="index.php?action=register">Register</a></li>
+          <li><a href="index.php?action=login">Login</a></li>
+        <?php else: // Show Profile and Logout if user is logged in 
         ?>
           <li><a href="index.php?action=profile">Profile</a></li>
           <li><a href="index.php?action=logout">Logout</a></li>
         <?php endif; ?>
+
       </ul>
     </nav>
   </header>
