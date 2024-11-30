@@ -31,3 +31,25 @@ function remove_studium($studium_id)
 
   return "Studium removed successfully.";
 }
+// View all studiums
+function view_studiums()
+{
+  global $pdo;
+
+  $sql = "SELECT * FROM studium";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute();
+
+  return $stmt->fetchAll(PDO::FETCH_ASSOC); // Return all studiums as an associative array
+}
+//view only one studim by its id
+function view_studium($studium_id)
+{
+  global $pdo;
+
+  $sql = "SELECT * FROM studium WHERE studium_id = ?";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([$studium_id]);
+
+  return $stmt->fetch(PDO::FETCH_ASSOC); // Return a single studium as an associative array
+}
