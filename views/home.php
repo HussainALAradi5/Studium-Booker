@@ -20,7 +20,7 @@
 
     // Check if user data is returned
     if ($user) {
-      $user_name = htmlspecialchars($user['user_name']); // Assuming 'user_name' is the column for the name
+      $user_name = htmlspecialchars($user['user_name']); 
       echo "<h1>Hi, $user_name! Welcome to the Home Page</h1>";
     } else {
       echo "<h1>Welcome to the Home Page</h1>";
