@@ -3,7 +3,9 @@ session_start(); // Start the session
 require_once './model/user.php';
 require_once './auth/security.php';
 include('./views/headers.php');
-
+require_once './model/studium.php'; // Include model to fetch studium details
+require_once './model/rating.php'; // Include model to fetch ratings
+require_once './model/comment.php'; // Include model to fetch comments
 // Handle actions (by default, show home page)
 $action = $_GET['action'] ?? 'home';
 
