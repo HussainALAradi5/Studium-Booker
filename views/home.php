@@ -20,7 +20,7 @@
 
     // Check if user data is returned
     if ($user) {
-      $user_name = htmlspecialchars($user['user_name']); 
+      $user_name = htmlspecialchars($user['user_name']);
       echo "<h1>Hi, $user_name! Welcome to the Home Page</h1>";
     } else {
       echo "<h1>Welcome to the Home Page</h1>";
@@ -29,7 +29,6 @@
   } else {
     // If the user is not logged in
     echo "<h1>Welcome to the Home Page</h1>";
-    echo "<p>Please <a href='index.php?action=login'>Login</a> or <a href='index.php?action=register'>Register</a></p>";
   }
   ?>
 </body>
