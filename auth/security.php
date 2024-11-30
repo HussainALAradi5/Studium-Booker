@@ -51,3 +51,32 @@ function validate_and_sanitize_user_data($user_name, $email, $password)
 
   return [$user_name, $email, $password];
 }
+function is_admin($user_id)
+{
+  global $pdo;
+
+  $sql = "SELECT is_admin FROM user WHERE user_id = ? AND is_active = 1";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([$user_id]);
+
+  return $stmt->fetchColumn() === "1"; // Return true if the user is admin
+}
+
+// Validate user authentication
+function validate_user_logged_in()
+{
+  if (!isset($_SESSION['user_id'])) {
+    throw new Exception("User is not logged in.");
+  }
+  return $_SESSION['user_id'];
+}
+
+// Validate admin authentication
+function validate_admin_logged_in()
+{
+  $user_id = validate_user_logged_in();
+  if (!is_admin($user_id)) {
+    throw new Exception("Admin privileges required.");
+  }
+  return $user_id;
+}
