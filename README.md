@@ -8,7 +8,7 @@
 
 ### **_Description_**
 
-#### this project is small and project to give mimic the behaviour of the TikTok and have some minor tweaks to learn new skills .
+#### this project is nice practice for me to have a nice experiecne with the php while using MVC design pattern.
 
 #### [Project](Studium Booker)
 
