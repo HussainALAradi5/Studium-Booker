@@ -1,4 +1,4 @@
-/* Style for the Studium Details page */
+/* Studium Card Styles */
 .studium-details {
   padding: 20px;
   background-color: #f9f9f9;
@@ -7,7 +7,8 @@
   margin-bottom: 20px;
 }
 
-.studium-details h1 {
+.studium-details h1,
+.studium-details h3 {
   color: #333;
 }
 

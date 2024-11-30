@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <link rel="stylesheet" href="css/login_register.css">
+  <link rel="stylesheet" href="css/studims.css"> <!-- Include the CSS for studium cards -->
 </head>
 
 <body>
@@ -31,6 +32,32 @@
     echo "<h1>Welcome to the Home Page</h1>";
   }
   ?>
+
+  <div class="studium-cards">
+    <?php
+    require_once './model/studium.php'; // Include model to fetch studiums and ratings
+
+    $studiums = view_studiums(); // Get all studiums
+
+    if (count($studiums) == 0) {
+      // If there are no studiums, display a message
+      echo "<h1 class='no-studium-message'>Sorry, there are no studiums!</h1>";
+    } else {
+      // Display studium cards
+      foreach ($studiums as $studium) {
+        $average_rating = get_average_rating($studium['studium_id']); // Get average rating
+        echo "<div class='studium-card'>";
+        echo "<h3>" . htmlspecialchars($studium['studium_name']) . "</h3>";
+        echo "<p>Location: " . htmlspecialchars($studium['location']) . "</p>";
+        echo "<p>Price per hour: $" . htmlspecialchars($studium['price_per_hour']) . "</p>";
+        echo "<p>Average Rating: " . $average_rating . " / 5</p>";
+        echo "<a href='studim.php?id=" . $studium['studium_id'] . "'>View Details</a>"; // Link to individual studium page
+        echo "</div>";
+      }
+    }
+    ?>
+  </div>
+
 </body>
 
 </html>
