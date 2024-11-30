@@ -11,7 +11,9 @@ if ($user) :
 
     <p><strong>Status:</strong> <?php echo $user['is_active'] == 1 ? 'Active' : 'Inactive'; ?></p>
 
-    <a href="index.php?action=edit">Edit Profile</a>
+    <a href="index.php?action=edit">
+      <button>Edit Profile</button>
+    </a>
   </div>
 
 <?php else : ?>
