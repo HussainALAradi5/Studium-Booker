@@ -31,7 +31,7 @@
 
 ### UML Diagrams:
 
----
+#### [UML Diagram](./images/studium_booking.png)
 
 #### Features:
 
