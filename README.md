@@ -45,45 +45,11 @@
 
 ### showcase:
 
-1. #### homepage: ![showcase](./images/homePage.png)
-
 ---
-
-2. #### login: ![showcase](./images/login.png)
-
----
-
-3. #### register: ![showcase](./images/regsiter.png)
-
----
-
-4. #### upload files by drag and drop: ![showcase](./images/upload.png)
-
----
-
-5. #### dark mode showcase: ![showcase](./images/Dark%20mode.png)
-
-6. #### comment section showcase: ![showcase](./images/CommentSection.png)
 
 ---
 
 #### animated showcase:
-
-#### 1. upload:
-
-![video](./images/upload.gif)
-
-#### 2. auth:
-
-![video](./images/auth.gif)
-
-#### 3. Dark mode:
-
-![video](./images/darkMode.gif)
-
-#### 4. Comments add/edit/remove
-
-![video](./images/comments%20update_edit.gif)
 
 ### **_Future Updates_**
 
