@@ -1,8 +1,9 @@
-
 <?php
+session_start(); // Start the session
 require_once './model/user.php';
 require_once './auth/security.php';
 include('./views/headers.php');
+
 // Handle actions (by default, show home page)
 $action = $_GET['action'] ?? 'home';
 
@@ -82,5 +83,6 @@ switch ($action) {
   default:
     include 'views/home.php'; // Show home page by default
     break;
-} ?>
+}
+?>
 <?php include('./views/footer.php'); ?>
