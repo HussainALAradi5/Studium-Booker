@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <section class="form-section">
       <h2>Fill in the details to add a new studium</h2>
-      <form method="POST" action="add_studium.php">
+      <form method="POST" action="index.php?action=add_studium">
 
         <div class="form-group">
           <label for="studium_name">Studium Name:</label>
