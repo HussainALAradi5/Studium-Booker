@@ -1,7 +1,6 @@
 <?php
 // Ensure the user is logged in and is an admin
 require_once 'auth/security.php';
-
 if (!isset($_COOKIE['user_id']) || $_COOKIE['is_admin'] != 1) {
   // Redirect non-admin users away from this page
   header("Location: index.php?action=home");
@@ -67,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form-group">
-          <label for="price_per_hour">Price per Hour ($):</label>
+          <label for="price_per_hour">Price per Hour (BD):</label>
           <input type="number" name="price_per_hour" id="price_per_hour" placeholder="Enter the price per hour" required>
         </div>
 
@@ -75,10 +74,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </form>
     </section>
   </main>
-
-  <footer>
-    <p>&copy; 2024 Your Company. All rights reserved.</p>
-  </footer>
-</body>
-
-</html>
