@@ -8,7 +8,7 @@
 
 ### **Progress**
 
-![Progress](https://progress-bar.xyz/88?color=blue)
+<img src="https://img.shields.io/badge/progress-88%25-royalblue" alt="Progress" style="zoom:150%;" />
 
 ### **Description**
 
@@ -66,6 +66,6 @@
 ### **Credits**
 
 i) google for images and videos
-ii) [progressBar](https://github.com/guibranco/progressbar?tab=readme-ov-file)
+ii) [progressBar](https://shields.io/)
 
 ---
