@@ -6,7 +6,11 @@
 
 ---
 
-### **_Description_**
+### **Progress**
+
+![Progress](https://progress-bar.xyz/88?color=blue)
+
+### **Description**
 
 #### this project is nice practice for me to have a nice experiecne with the php while using MVC design pattern.
 
@@ -14,7 +18,7 @@
 
 ---
 
-### **_Technologies Used_**
+### **Technologies Used**
 
 - PHP
 - Ajax(JS)
@@ -22,7 +26,7 @@
 
 ---
 
-### **_Getting Started_**
+### **Getting Started**
 
 1. install XAMPP(or any alternative to have localhost for the project)
 2. if you using XAMPP type: localhost/studium_booker
@@ -41,7 +45,7 @@
 
 ---
 
-## **_Screenshots_**
+## **Screenshots**
 
 ### showcase:
 
@@ -51,7 +55,7 @@
 
 #### animated showcase:
 
-### **_Future Updates_**
+### **Future Updates**
 
 - [ ] Add google Map
 - [ ] Add profile Picture
@@ -59,8 +63,9 @@
 
 ---
 
-### **_Credits_**
+### **Credits**
 
-##### google for images and videos
+i) google for images and videos
+ii) [progressBar](https://github.com/guibranco/progressbar?tab=readme-ov-file)
 
 ---

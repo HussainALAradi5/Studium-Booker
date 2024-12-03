@@ -1,7 +1,5 @@
 <?php
-require_once './model/studium.php'; // Include model to fetch studium details
-require_once './model/rating.php'; // Include model to fetch ratings
-require_once './model/comment.php'; // Include model to fetch comments
+
 
 // Get studium details
 $studium_id = $_GET['id'] ?? 0; // Get studium ID from the URL

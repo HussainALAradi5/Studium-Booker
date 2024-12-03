@@ -1,5 +1,4 @@
 <?php
-require_once './model/studium.php'; // Include model to fetch studiums and ratings
 
 $studiums = view_studiums(); // Get all studiums
 
