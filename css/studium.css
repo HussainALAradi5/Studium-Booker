@@ -1,6 +1,6 @@
 /* Studium Card Styles */
 .studium-card {
-  padding: 20px;
+  padding: 50px; /* Reduced padding for smaller screens */
   background-color: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -52,6 +52,56 @@
   justify-content: center;
   padding: 20px;
   background-color: #f5f5f5;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 1024px) {
+  .studium-card {
+    flex: 1 1 calc(50% - 40px); /* Two cards per row on medium screens */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .studium-card {
+    flex: 1 1 calc(100% - 40px); /* Full width for each card on small screens */
+    padding: 20px; /* Adjust padding for smaller screens */
+  }
+
+  .studium-card h3 {
+    font-size: 18px; /* Smaller title font size */
+  }
+
+  .studium-card p {
+    font-size: 14px; /* Smaller paragraph font size */
+  }
+
+  .studium-card a {
+    font-size: 14px; /* Smaller button font size */
+    padding: 8px 12px; /* Smaller button padding */
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .studium-cards {
+    padding: 10px; /* Reduced container padding for very small screens */
+  }
+
+  .studium-card {
+    padding: 15px; /* Further reduced card padding */
+  }
+
+  .studium-card h3 {
+    font-size: 16px; /* Smaller font size for very small screens */
+  }
+
+  .studium-card p {
+    font-size: 12px; /* Adjust paragraph font size */
+  }
+
+  .studium-card a {
+    font-size: 12px; /* Adjust button font size */
+    padding: 6px 10px; /* Smaller button padding */
+  }
 }
 
 /* Rating Stars */

@@ -1,5 +1,5 @@
 <?php
-// comments_studim.php - Displays comments and handles comment submission
+// comments_studium.php - Displays comments and handles comment submission
 
 // Fetch the comments for the current studium
 $studium_id = $_GET['id']; // Get the studium ID from the query parameter

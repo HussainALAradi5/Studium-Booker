@@ -19,7 +19,7 @@ $average_rating = get_average_rating($studium_id);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($studium['studium_name']); ?> - Details</title>
-  <link rel="stylesheet" href="css/studim.css">
+  <link rel="stylesheet" href="css/studium.css">
 </head>
 
 <body>

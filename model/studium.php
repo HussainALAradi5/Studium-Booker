@@ -42,7 +42,7 @@ function view_studiums()
 
   return $stmt->fetchAll(PDO::FETCH_ASSOC); // Return all studiums as an associative array
 }
-//view only one studim by its id
+//view only one studium by its id
 function view_studium($studium_id)
 {
   global $pdo;
