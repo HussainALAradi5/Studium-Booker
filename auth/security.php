@@ -65,17 +65,20 @@ function is_admin($user_id)
 // Validate user authentication
 function validate_user_logged_in()
 {
-  if (!isset($_SESSION['user_id'])) {
+  if (!isset($_SESSION['user_id']) && !isset($_COOKIE['user_id'])) {
     throw new Exception("User is not logged in.");
   }
-  return $_SESSION['user_id'];
+  return $_SESSION['user_id'] ?? $_COOKIE['user_id'];
 }
 
 // Validate admin authentication
 function validate_admin_logged_in()
 {
   $user_id = validate_user_logged_in();
-  if (!is_admin($user_id)) {
+  if (
+    !(isset($_SESSION['is_admin']) && $_SESSION['is_admin'] == 1) &&
+    !(isset($_COOKIE['is_admin']) && $_COOKIE['is_admin'] == 1)
+  ) {
     throw new Exception("Admin privileges required.");
   }
   return $user_id;
