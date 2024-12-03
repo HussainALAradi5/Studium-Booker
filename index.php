@@ -1,5 +1,4 @@
 <?php
-session_start(); // Start the session
 require_once './model/user.php';
 require_once './auth/security.php';
 include('./views/headers.php');

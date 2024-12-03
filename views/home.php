@@ -49,7 +49,7 @@
         echo "<div class='studium-card'>";
         echo "<h3>" . htmlspecialchars($studium['studium_name']) . "</h3>";
         echo "<p>Location: " . htmlspecialchars($studium['location']) . "</p>";
-        echo "<p>Price per hour: $" . htmlspecialchars($studium['price_per_hour']) . "</p>";
+        echo "<p>Price per hour: " . htmlspecialchars($studium['price_per_hour']) . " BD" . "</p>";
         echo "<p>Average Rating: " . $average_rating . " / 5</p>";
         echo "<a href='studim.php?id=" . $studium['studium_id'] . "'>View Details</a>"; // Link to individual studium page
         echo "</div>";
