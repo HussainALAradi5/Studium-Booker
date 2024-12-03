@@ -95,18 +95,6 @@ switch ($action) {
       exit;
     }
 
-    // Handle form submission for adding a studium
-    $message = "";
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-      $studium_name = secure_input($_POST['studium_name']);
-      $width = secure_input($_POST['width']);
-      $height = secure_input($_POST['height']);
-      $location = secure_input($_POST['location']);
-      $price_per_hour = secure_input($_POST['price_per_hour']);
-
-      // Add studium logic (you would call your add_studium function here)
-      $message = add_studium($studium_name, $width, $height, $location, $price_per_hour);
-    }
 
     include 'views/studium/add_studium.php'; // Include the form to add a studium
     break;
