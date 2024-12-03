@@ -1,0 +1,115 @@
+/* Studium Card Styles */
+.studium-card {
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.studium-card h3 {
+  color: #333;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.studium-card p {
+  color: #555;
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.studium-card a {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 15px;
+  background-color: teal;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.studium-card a:hover {
+  background-color: darkslategray;
+  color: #f1f1f1;
+}
+
+/* Hover Effects */
+.studium-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Container */
+.studium-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+/* Rating Stars */
+#rating-stars {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.star {
+  font-size: 30px;
+  cursor: pointer;
+  color: gray;
+  transition: color 0.3s ease;
+}
+
+.star:hover,
+.star.hover {
+  color: orange;
+}
+
+.star.fixed {
+  color: gold;
+}
+
+/* Comment Section */
+.comment {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+.comment p {
+  margin: 5px 0;
+}
+
+.comment small {
+  color: #888;
+}
+
+/* Comment Form */
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+input[type="submit"] {
+  background-color: teal;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: darkslategray;
+}

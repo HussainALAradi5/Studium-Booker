@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <link rel="stylesheet" href="css/login_register.css">
-  <link rel="stylesheet" href="css/studims.css"> <!-- Include the CSS for studium cards -->
+  <link rel="stylesheet" href="css/studium.css">
 </head>
 
 <body>
