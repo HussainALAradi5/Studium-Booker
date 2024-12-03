@@ -27,7 +27,9 @@ $average_rating = get_average_rating($studium_id);
   <div class="studium-details">
     <h1><?php echo htmlspecialchars($studium['studium_name']); ?></h1>
     <p>Location: <?php echo htmlspecialchars($studium['location']); ?></p>
-    <p>Price per hour: $<?php echo htmlspecialchars($studium['price_per_hour']); ?></p>
+    <p>Price per hour:
+      <?php echo htmlspecialchars($studium['price_per_hour']) . " BD";
+      ?></p>
     <p>Average Rating: <?php echo $average_rating; ?> / 5</p>
   </div>
 
