@@ -7,11 +7,11 @@ $studium_id = $_GET['id']; // Get the studium ID from the query parameter
 function get_comments($studium_id)
 {
   global $pdo;
-  $sql = "SELECT c.comment, c.commented_by_user, u.user_name, c.commented_at
+  $sql = "SELECT c.comment, c.comment_by, u.user_name, c.comment_at
             FROM comment c
-            JOIN user u ON c.commented_by_user = u.user_id
+            JOIN user u ON c.comment_by = u.user_id
             WHERE c.studium_id = ?
-            ORDER BY c.commented_at DESC";
+            ORDER BY c.comment_at DESC";
   $stmt = $pdo->prepare($sql);
   $stmt->execute([$studium_id]);
   return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -25,7 +25,7 @@ $comments = get_comments($studium_id);
   <div class="comment">
     <p><strong><?php echo htmlspecialchars($comment['user_name']); ?></strong> says:</p>
     <p><?php echo htmlspecialchars($comment['comment']); ?></p>
-    <p><small>Posted on <?php echo date('F j, Y, g:i a', strtotime($comment['commented_at'])); ?></small></p>
+    <p><small>Posted on <?php echo date('F j, Y, g:i a', strtotime($comment['comment_at'])); ?></small></p>
   </div>
 <?php endforeach; ?>
 
