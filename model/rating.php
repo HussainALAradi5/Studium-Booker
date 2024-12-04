@@ -44,3 +44,13 @@ function get_average_rating($studium_id)
 
   return round($stmt->fetchColumn(), 2); // Round to 2 decimal places
 }
+
+// Fetch the user's rating for a given studium
+function get_user_rating($studium_id, $user_id)
+{
+  global $pdo;
+  $sql = "SELECT rate FROM rating WHERE studium_id = ? AND rated_by_user = ?";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([$studium_id, $user_id]);
+  return $stmt->fetchColumn();
+}

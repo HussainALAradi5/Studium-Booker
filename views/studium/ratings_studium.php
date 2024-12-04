@@ -1,19 +1,10 @@
 <?php
-
+include_once './model/rating.php';
 // Fetch current user's rating if it exists
 $user_id = validate_user_logged_in();
 $studium_id = $_GET['id']; // Get the studium ID from the query parameter
 
 // Fetch the existing rating for the user, if available
-function get_user_rating($studium_id, $user_id)
-{
-  global $pdo;
-  $sql = "SELECT rate FROM rating WHERE studium_id = ? AND rated_by_user = ?";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$studium_id, $user_id]);
-  return $stmt->fetchColumn();
-}
-
 $current_rating = get_user_rating($studium_id, $user_id);
 ?>
 
