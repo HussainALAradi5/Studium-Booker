@@ -98,6 +98,29 @@ switch ($action) {
 
     include 'views/studium/add_studium.php'; // Include the form to add a studium
     break;
+  case 'studium':
+    // Get the studium ID from the query parameters
+    $studium_id = $_GET['id'] ?? null;
+
+    if (!$studium_id) {
+      echo "Studium ID not provided.";
+      break;
+    }
+
+    // Fetch studium details using the model
+    $studium = view_studium($studium_id);
+
+    if (!$studium) {
+      echo "Studium not found.";
+      break;
+    }
+
+    // Get average rating (optional, if the function exists in your rating model)
+    $average_rating = get_average_rating($studium_id);
+
+    // Include the studium view to display the details
+    include './views/studium/studium.php';
+    break;
 }
 
 ?>

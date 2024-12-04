@@ -9,6 +9,7 @@ foreach ($studiums as $studium) {
     echo "<p>Location: " . htmlspecialchars($studium['location']) . "</p>";
     echo "<p>Price per hour: " . htmlspecialchars($studium['price_per_hour']) .  " BD" . "</p>";
     echo "<p>Average Rating: " . $average_rating . " / 5</p>";
-    echo "<a href='views/studium/studium.php?id=" . $studium['studium_id'] . "'>View Details</a>"; // Link to individual studium page
+    echo "<a href='index.php?action=studium&id=" . $studium['studium_id'] . "'>View Details</a>";
+
     echo "</div>";
 }
