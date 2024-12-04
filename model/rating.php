@@ -54,3 +54,13 @@ function get_user_rating($studium_id, $user_id)
   $stmt->execute([$studium_id, $user_id]);
   return $stmt->fetchColumn();
 }
+function get_all_ratings($studium_id)
+{
+  global $pdo;
+
+  $sql = "SELECT * FROM rating WHERE studium_id = ?";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([$studium_id]);
+
+  return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
