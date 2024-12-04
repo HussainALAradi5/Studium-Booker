@@ -10,7 +10,7 @@ function add_comment($studium_id, $comment)
   $user_id = validate_user_logged_in();
 
   // Sanitize and insert the comment into the database
-  $sql = "INSERT INTO comment (comment, studium_id, commented_by_user) VALUES (?, ?, ?)";
+  $sql = "INSERT INTO comment (comment, studium_id, comment_by) VALUES (?, ?, ?)";
   $stmt = $pdo->prepare($sql);
   $stmt->execute([secure_input($comment), $studium_id, $user_id]);
 
@@ -22,11 +22,11 @@ function get_comments_by_studium($studium_id)
 {
   global $pdo;
 
-  $sql = "SELECT c.comment, c.commented_by_user, u.user_name, c.commented_at 
+  $sql = "SELECT c.comment, c.comment_by, u.user_name, c.comment_at
             FROM comment c 
-            JOIN user u ON c.commented_by_user = u.user_id 
+            JOIN user u ON c.comment_by = u.user_id 
             WHERE c.studium_id = ? 
-            ORDER BY c.commented_at DESC";
+            ORDER BY c.comment_at DESC";
   $stmt = $pdo->prepare($sql);
   $stmt->execute([$studium_id]);
 

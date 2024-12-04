@@ -1,23 +1,10 @@
 <?php
 // comments_studium.php - Displays comments and handles comment submission
+include_once './model/comment.php'; // Use include_once or require_once
 
 // Fetch the comments for the current studium
 $studium_id = $_GET['id']; // Get the studium ID from the query parameter
-
-function get_comments($studium_id)
-{
-  global $pdo;
-  $sql = "SELECT c.comment, c.comment_by, u.user_name, c.comment_at
-            FROM comment c
-            JOIN user u ON c.comment_by = u.user_id
-            WHERE c.studium_id = ?
-            ORDER BY c.comment_at DESC";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$studium_id]);
-  return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
-
-$comments = get_comments($studium_id);
+$comments = get_comments_by_studium($studium_id);
 ?>
 
 <h2>Comments</h2>
