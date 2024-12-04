@@ -2,12 +2,18 @@
 require_once './auth/security.php';
 
 // Add a new comment
+// Add a new comment
 function add_comment($studium_id, $comment)
 {
   global $pdo;
 
   // Validate logged-in user and get user ID
   $user_id = validate_user_logged_in();
+
+  // Check if the user has already commented on this studium
+  if (user_has_commented($studium_id, $user_id)) {
+    return "You have already commented on this studium.";
+  }
 
   // Sanitize and insert the comment into the database
   $sql = "INSERT INTO comment (comment, studium_id, comment_by) VALUES (?, ?, ?)";
@@ -16,6 +22,20 @@ function add_comment($studium_id, $comment)
 
   return "Comment added successfully.";
 }
+
+// Check if the user has already commented on the studium
+function user_has_commented($studium_id, $user_id)
+{
+  global $pdo;
+
+  $sql = "SELECT COUNT(*) FROM comment WHERE studium_id = ? AND comment_by = ?";
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute([$studium_id, $user_id]);
+
+  // If the user has commented, return true (count > 0)
+  return $stmt->fetchColumn() > 0;
+}
+
 
 // Get all comments for a studium
 function get_comments_by_studium($studium_id)

@@ -10,18 +10,22 @@ $comments = get_comments_by_studium($studium_id);
 // Check if the user is logged in (used to conditionally display the comment form)
 $user_id = null;
 $is_logged_in = false;
+$user_comment = null;
 
 try {
   $user_id = validate_user_logged_in(); // Check if user is logged in
   $is_logged_in = true;
+
+  // Check if the logged-in user has already commented on this studium
+  $user_comment = user_has_commented($studium_id, $user_id);
 } catch (Exception $e) {
-  // User is not logged in, continue displaying comments but not the form
 }
 
 ?>
 
 <h2>Comments</h2>
 
+<!-- Display all comments for the studium -->
 <?php foreach ($comments as $comment): ?>
   <div class="comment">
     <p><strong><?php echo htmlspecialchars($comment['user_name']); ?></strong> says:</p>
@@ -30,14 +34,20 @@ try {
   </div>
 <?php endforeach; ?>
 
-<!-- Comment submission form (visible only for logged-in users) -->
+<!-- Display comment submission form only if the user is logged in and has not commented -->
 <?php if ($is_logged_in): ?>
   <h3>Leave a Comment</h3>
-  <form method="POST" action="submit_comment.php">
-    <input type="hidden" name="studium_id" value="<?php echo $studium_id; ?>">
-    <textarea name="comment" placeholder="Leave a comment" required></textarea>
-    <input type="submit" value="Submit Comment">
-  </form>
+  <?php if (!$user_comment): // Show the form only if the user hasn't commented 
+  ?>
+    <form method="POST" action="submit_comment.php">
+      <input type="hidden" name="studium_id" value="<?php echo $studium_id; ?>">
+      <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+      <textarea name="comment" placeholder="Leave a comment" required></textarea>
+      <input type="submit" value="Submit Comment">
+    </form>
+  <?php else: ?>
+    <p>You have already left a comment for this studium.</p>
+  <?php endif; ?>
 <?php else: ?>
   <p>You must be logged in to leave a comment.</p>
 <?php endif; ?>
