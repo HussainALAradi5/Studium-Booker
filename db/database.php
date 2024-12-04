@@ -78,6 +78,17 @@ try {
 
   // Execute the query for creating the rating table
   $pdo->exec($rating);
+  $comment = "
+  CREATE TABLE IF NOT EXISTS comment (
+      comment_id INT AUTO_INCREMENT PRIMARY KEY,
+      comment TEXT NOT NULL,
+      studium_id INT NOT NULL,
+      comment_by INT NOT NULL,
+      comment_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (studium_id) REFERENCES studium(studium_id),
+      FOREIGN KEY (comment_by) REFERENCES user(user_id)
+  )";
+  $pdo->exec($comment);
 } catch (PDOException $e) {
   echo "Error: " . $e->getMessage();
 }
