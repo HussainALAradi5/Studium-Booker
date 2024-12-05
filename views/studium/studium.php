@@ -106,7 +106,6 @@ try {
     <p>You must be logged in to leave a comment.</p>
   <?php endif; ?>
 
-  <!-- Pass PHP variables to JavaScript -->
   <script>
     const studiumId = <?php echo json_encode($studium_id); ?>;
     const userId = <?php echo json_encode($user_id); ?>;
