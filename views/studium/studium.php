@@ -36,6 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
   header("Location: " . $_SERVER['REQUEST_URI']);
   exit;
 }
+
+// Handle POST rating submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating']) && $is_logged_in) {
+  $rating = intval($_POST['rating']);
+  try {
+    add_rating($studium_id, $rating);
+    echo "<script>alert('Rating added successfully.');</script>";
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit;
+  } catch (Exception $e) {
+    echo "<script>alert('" . addslashes($e->getMessage()) . "');</script>";
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
   <title><?php echo htmlspecialchars($studium['studium_name']); ?> - Details</title>
   <link rel="stylesheet" href="css/studium.css?v=<?php echo time(); ?>">
   <script src="scripts/rating.js" defer></script>
+  <script>
+    const studiumId = <?php echo $studium_id; ?>;
+    const userId = <?php echo $user_id; ?>; // Ensure you pass user_id if you need to use it in the rating submission
+  </script>
 </head>
 
 <body>
@@ -86,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
   <?php if (!$is_logged_in): ?>
     <h2 id="log_par">Log in to comment.</h2>
   <?php elseif ($is_logged_in && $user_comment): ?>
-    <h2>You Already Comment!</h2>
+    <h2>You Already Commented!</h2>
   <?php endif; ?>
   <div class="comments">
     <?php if (!empty($comments)): ?>
@@ -104,14 +121,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
 
   <?php if ($is_logged_in && !$user_comment): ?>
     <h3>Leave a Comment</h3>
-
     <form method="POST">
       <textarea name="comment" required placeholder="Write your comment"></textarea>
       <button type="submit">Submit</button>
     </form>
-
-
-
   <?php endif; ?>
 </body>
 

@@ -45,7 +45,8 @@ document.addEventListener("DOMContentLoaded", function () {
     formData.append("user_id", userId)
     formData.append("rating", rating)
 
-    fetch("submit_rating.php", {
+    fetch("index.php?action=studium&id=" + studiumId, {
+      // changed to `studium.php`
       method: "POST",
       body: formData,
     })
