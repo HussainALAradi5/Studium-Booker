@@ -49,6 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating']) && $is_logg
     echo "<script>alert('" . addslashes($e->getMessage()) . "');</script>";
   }
 }
+
+// Check if the user has already rated the studium
+$user_rating = get_user_rating($studium_id, $user_id);
+$has_rated = $user_rating !== false;
 ?>
 
 <!DOCTYPE html>
@@ -76,13 +80,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating']) && $is_logg
 
   <h2>Ratings</h2>
   <?php if ($is_logged_in): ?>
-    <div id="rating-stars">
-      <?php for ($i = 1; $i <= 5; $i++): ?>
-        <span class="star" data-value="<?php echo $i; ?>">&#9733;</span>
-      <?php endfor; ?>
-    </div>
+    <?php if ($has_rated): ?>
+      <h2>You Already Rated!</h2>
+      <p>Rating: <?php echo $user_rating; ?> / 5</p>
+    <?php else: ?>
+      <form method="POST">
+        <label for="rating">Rate this Studium (1 to 5):</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" required />
+        <button type="submit">Submit</button>
+      </form>
+    <?php endif; ?>
   <?php else: ?>
-    <p>Log in to rate this studium.</p>
+    <h2>You have to sign in to rate!</h2>
   <?php endif; ?>
 
   <?php if (!empty($ratings)): ?>
@@ -111,6 +120,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating']) && $is_logg
         <div class="comment">
           <strong><?php echo htmlspecialchars($comment['user_name']); ?>:</strong>
           <p><?php echo htmlspecialchars($comment['comment']); ?></p>
+          <?php if ($is_logged_in && $has_rated): ?>
+            <p>Rating: <?php echo $user_rating; ?> / 5</p>
+          <?php endif; ?>
           <small><?php echo date('F j, Y', strtotime($comment['comment_at'])); ?></small>
         </div>
       <?php endforeach; ?>
