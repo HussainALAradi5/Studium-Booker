@@ -8,7 +8,7 @@
 
 ### **Progress**
 
-<img src="https://img.shields.io/badge/progress-88%25-royalblue" alt="Progress" style="zoom:150%;" />
+<img src="https://img.shields.io/badge/progress-94%25-royalblue" alt="Progress" style="zoom:150%;" />
 
 ### **Description**
 
