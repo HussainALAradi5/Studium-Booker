@@ -21,12 +21,13 @@
         <?php else: ?>
           <!-- Show Profile and Logout if user is logged in -->
           <li><a href="index.php?action=profile">Profile</a></li>
-          <li><a href="index.php?action=logout">Logout</a></li>
           <?php if (isset($_COOKIE['is_admin']) && $_COOKIE['is_admin'] == 1): ?>
             <!-- Show Admin Panel and Add Studium link if the user is an admin -->
             <li><a href="index.php?action=admin_panel">Admin Panel</a></li>
             <li><a href="index.php?action=add_studium">Add Studium</a></li> <!-- Corrected this link -->
           <?php endif; ?>
+          <li><a href="index.php?action=logout">Logout</a></li>
+
         <?php endif; ?>
       </ul>
     </nav>
