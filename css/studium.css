@@ -148,18 +148,14 @@
 }
 
 .comment:hover {
-  background-color: #e9f7ff;
+  background-color: royalblue;
+  transition: 1.5s;
 }
 
 .comment p {
   margin: 5px 0;
   color: #333;
   font-size: 16px;
-}
-
-.comment small {
-  color: #888;
-  font-size: 14px;
 }
 
 .comment-author {
