@@ -100,16 +100,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
     <?php endif; ?>
   </div>
 
-  <?php if ($is_logged_in): ?>
+  <?php if ($is_logged_in && !$user_comment): ?>
     <h3>Leave a Comment</h3>
-    <?php if (!$user_comment): ?>
-      <form method="POST">
-        <textarea name="comment" required placeholder="Write your comment"></textarea>
-        <button type="submit">Submit</button>
-      </form>
-    <?php else: ?>
-      <p>You have already commented.</p>
-    <?php endif; ?>
+
+    <form method="POST">
+      <textarea name="comment" required placeholder="Write your comment"></textarea>
+      <button type="submit">Submit</button>
+    </form>
+
+
 
   <?php endif; ?>
 </body>
