@@ -1,53 +1,52 @@
 <?php
-// comments_studium.php - Displays comments and handles comment submission
-include_once './model/comment.php'; // Use include_once or require_once
-include_once './auth/security.php'; // To check user login status
+require_once 'auth/security.php'; // Include the auth functions
 
-// Fetch the comments for the current studium
-$studium_id = $_GET['id']; // Get the studium ID from the query parameter
-$comments = get_comments_by_studium($studium_id);
-
-// Check if the user is logged in (used to conditionally display the comment form)
-$user_id = null;
-$is_logged_in = false;
-$user_comment = null;
-
-try {
-  $user_id = validate_user_logged_in(); // Check if user is logged in
-  $is_logged_in = true;
-
-  // Check if the logged-in user has already commented on this studium
-  $user_comment = user_has_commented($studium_id, $user_id);
-} catch (Exception $e) {
+function get_comments($studium_id)
+{
+  return get_comments_by_studium($studium_id); // Fetch comments for a studium
 }
 
-?>
+function handle_comment_submission($studium_id)
+{
+  if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment'])) {
+    // Sanitize and add the comment to the database
+    $comment = $_POST['comment'];
+    $response = add_comment($studium_id, $comment);
+    echo "<script>alert('" . $response . "');</script>";
+    // Reload the page to show the new comment
+    header("Location: " . $_SERVER['REQUEST_URI']);
+    exit;
+  }
+}
 
-<h2>Comments</h2>
+function render_comment_form($studium_id, $user_id)
+{
+  $user_comment = $user_id ? user_has_commented($studium_id, $user_id) : null;
+  if ($user_id) {
+    if (!$user_comment) {
+      echo '<form method="POST" id="comment-form">
+                    <textarea name="comment" placeholder="Leave a comment" required></textarea>
+                    <button type="submit">Submit Comment</button>
+                  </form>';
+    } else {
+      echo '<p>You have already left a comment for this studium.</p>';
+    }
+  } else {
+    echo '<p>You must be logged in to leave a comment.</p>';
+  }
+}
 
-<!-- Display all comments for the studium -->
-<?php foreach ($comments as $comment): ?>
-  <div class="comment">
-    <p><strong><?php echo htmlspecialchars($comment['user_name']); ?></strong> says:</p>
-    <p><?php echo htmlspecialchars($comment['comment']); ?></p>
-    <p><small>Posted on <?php echo date('F j, Y, g:i a', strtotime($comment['comment_at'])); ?></small></p>
-  </div>
-<?php endforeach; ?>
-
-<!-- Display comment submission form only if the user is logged in and has not commented -->
-<?php if ($is_logged_in): ?>
-  <h3>Leave a Comment</h3>
-  <?php if (!$user_comment): // Show the form only if the user hasn't commented 
-  ?>
-    <form method="POST" action="submit_comment.php">
-      <input type="hidden" name="studium_id" value="<?php echo $studium_id; ?>">
-      <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-      <textarea name="comment" placeholder="Leave a comment" required></textarea>
-      <input type="submit" value="Submit Comment">
-    </form>
-  <?php else: ?>
-    <p>You have already left a comment for this studium.</p>
-  <?php endif; ?>
-<?php else: ?>
-  <p>You must be logged in to leave a comment.</p>
-<?php endif; ?>
+function render_comments($comments)
+{
+  if ($comments) {
+    foreach ($comments as $comment) {
+      echo '<div class="comment">
+                    <p><strong>' . htmlspecialchars($comment['user_name']) . '</strong> says:</p>
+                    <p>' . htmlspecialchars($comment['comment']) . '</p>
+                    <p><small>Posted on ' . date('F j, Y, g:i a', strtotime($comment['comment_at'])) . '</small></p>
+                  </div>';
+    }
+  } else {
+    echo '<p>No comments yet for this studium.</p>';
+  }
+}

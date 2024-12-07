@@ -8,7 +8,11 @@ function add_comment($studium_id, $comment)
   global $pdo;
 
   // Validate logged-in user and get user ID
-  $user_id = validate_user_logged_in();
+  try {
+    $user_id = validate_user_logged_in();
+  } catch (Exception $e) {
+    return "You must be logged in to comment.";
+  }
 
   // Check if the user has already commented on this studium
   if (user_has_commented($studium_id, $user_id)) {
@@ -16,12 +20,17 @@ function add_comment($studium_id, $comment)
   }
 
   // Sanitize and insert the comment into the database
-  $sql = "INSERT INTO comment (comment, studium_id, comment_by) VALUES (?, ?, ?)";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([secure_input($comment), $studium_id, $user_id]);
+  try {
+    $sql = "INSERT INTO comment (comment, studium_id, comment_by) VALUES (?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([secure_input($comment), $studium_id, $user_id]);
 
-  return "Comment added successfully.";
+    return "Comment added successfully.";
+  } catch (Exception $e) {
+    return "Error inserting comment: " . $e->getMessage();
+  }
 }
+
 
 // Check if the user has already commented on the studium
 function user_has_commented($studium_id, $user_id)
