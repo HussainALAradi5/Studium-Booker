@@ -11,7 +11,6 @@
         <strong><?php echo htmlspecialchars($comment['user_name']); ?>:</strong>
         <p><?php echo htmlspecialchars($comment['comment']); ?></p>
         <?php if ($is_logged_in && $has_rated): ?>
-          <p>Rating: <?php echo $user_rating; ?> / 5</p>
         <?php endif; ?>
         <small><?php echo date('F j, Y', strtotime($comment['comment_at'])); ?></small>
       </div>

@@ -63,11 +63,7 @@ $has_rated = $user_rating !== false;
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($studium['studium_name']); ?> - Details</title>
   <link rel="stylesheet" href="css/studium.css?v=<?php echo time(); ?>">
-  <script src="scripts/rating.js" defer></script>
-  <script>
-    const studiumId = <?php echo $studium_id; ?>;
-    const userId = <?php echo $user_id; ?>; // Ensure you pass user_id if you need to use it in the rating submission
-  </script>
+
 </head>
 
 <body>

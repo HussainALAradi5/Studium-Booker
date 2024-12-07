@@ -13,16 +13,6 @@
   <h2>You have to sign in to rate!</h2>
 <?php endif; ?>
 
-<?php if (!empty($ratings)): ?>
-  <ul>
-    <?php foreach ($ratings as $rating): ?>
-      <li>
-        Rated by User ID: <?php echo $rating['rated_by_user']; ?> |
-        Rating: <?php echo $rating['rate']; ?> |
-        Date: <?php echo date('F j, Y', strtotime($rating['rated_at'])); ?>
-      </li>
-    <?php endforeach; ?>
-  </ul>
-<?php else: ?>
-  <p>No ratings yet.</p>
+
+<?php if (empty($ratings)): ?> <p>No ratings yet.</p>
 <?php endif; ?>
