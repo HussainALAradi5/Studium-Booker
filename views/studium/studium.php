@@ -85,6 +85,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
   <h2>Comments</h2>
   <?php if (!$is_logged_in): ?>
     <h2 id="log_par">Log in to comment.</h2>
+  <?php elseif ($is_logged_in && $user_comment): ?>
+    <h2>You Already Comment!</h2>
   <?php endif; ?>
   <div class="comments">
     <?php if (!empty($comments)): ?>
