@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($studium['studium_name']); ?> - Details</title>
-  <link rel="stylesheet" href="css/studium.css">
+  <link rel="stylesheet" href="css/studium.css?v=<?php echo time(); ?>">
   <script src="scripts/rating.js" defer></script>
 </head>
 
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
 
   <h2>Comments</h2>
   <?php if (!$is_logged_in): ?>
-    <p>Log in to comment.</p>
+    <h2 id="log_par">Log in to comment.</h2>
   <?php endif; ?>
   <div class="comments">
     <?php if (!empty($comments)): ?>
