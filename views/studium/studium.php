@@ -78,66 +78,8 @@ $has_rated = $user_rating !== false;
     <p>Average Rating: <?php echo $average_rating; ?> / 5</p>
   </div>
 
-  <h2>Ratings</h2>
-  <?php if ($is_logged_in): ?>
-    <?php if ($has_rated): ?>
-      <h2>You Already Rated!</h2>
-      <p>Rating: <?php echo $user_rating; ?> / 5</p>
-    <?php else: ?>
-      <form method="POST">
-        <label for="rating">Rate this Studium (1 to 5):</label>
-        <input type="number" id="rating" name="rating" min="1" max="5" required />
-        <button type="submit">Submit</button>
-      </form>
-    <?php endif; ?>
-  <?php else: ?>
-    <h2>You have to sign in to rate!</h2>
-  <?php endif; ?>
-
-  <?php if (!empty($ratings)): ?>
-    <ul>
-      <?php foreach ($ratings as $rating): ?>
-        <li>
-          Rated by User ID: <?php echo $rating['rated_by_user']; ?> |
-          Rating: <?php echo $rating['rate']; ?> |
-          Date: <?php echo date('F j, Y', strtotime($rating['rated_at'])); ?>
-        </li>
-      <?php endforeach; ?>
-    </ul>
-  <?php else: ?>
-    <p>No ratings yet.</p>
-  <?php endif; ?>
-
-  <h2>Comments</h2>
-  <?php if (!$is_logged_in): ?>
-    <h2 id="log_par">Log in to comment.</h2>
-  <?php elseif ($is_logged_in && $user_comment): ?>
-    <h2>You Already Commented!</h2>
-  <?php endif; ?>
-  <div class="comments">
-    <?php if (!empty($comments)): ?>
-      <?php foreach ($comments as $comment): ?>
-        <div class="comment">
-          <strong><?php echo htmlspecialchars($comment['user_name']); ?>:</strong>
-          <p><?php echo htmlspecialchars($comment['comment']); ?></p>
-          <?php if ($is_logged_in && $has_rated): ?>
-            <p>Rating: <?php echo $user_rating; ?> / 5</p>
-          <?php endif; ?>
-          <small><?php echo date('F j, Y', strtotime($comment['comment_at'])); ?></small>
-        </div>
-      <?php endforeach; ?>
-    <?php else: ?>
-      <p>No comments yet.</p>
-    <?php endif; ?>
-  </div>
-
-  <?php if ($is_logged_in && !$user_comment): ?>
-    <h3>Leave a Comment</h3>
-    <form method="POST">
-      <textarea name="comment" required placeholder="Write your comment"></textarea>
-      <button type="submit">Submit</button>
-    </form>
-  <?php endif; ?>
+  <?php include 'rating.php'; ?>
+  <?php include 'comment.php'; ?>
 </body>
 
 </html>
