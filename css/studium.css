@@ -138,6 +138,7 @@
 .comment p {
   margin: 5px 0;
   flex-grow: 1;
+  font-size: 50px;
 }
 
 .comment small {
@@ -181,4 +182,8 @@ input[type="submit"] {
 
 input[type="submit"]:hover {
   background-color: #007777;
+}
+.log_par {
+  color: red;
+  font-size: 30px;
 }

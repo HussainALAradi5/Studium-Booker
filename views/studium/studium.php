@@ -83,6 +83,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
   <?php endif; ?>
 
   <h2>Comments</h2>
+  <?php if (!$is_logged_in): ?>
+    <p>Log in to comment.</p>
+  <?php endif; ?>
   <div class="comments">
     <?php if (!empty($comments)): ?>
       <?php foreach ($comments as $comment): ?>
@@ -107,8 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment']) && $is_log
     <?php else: ?>
       <p>You have already commented.</p>
     <?php endif; ?>
-  <?php else: ?>
-    <p>Log in to comment.</p>
+
   <?php endif; ?>
 </body>
 
