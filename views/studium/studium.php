@@ -73,7 +73,7 @@ $has_rated = $user_rating !== false;
     <p>Price per hour: <?php echo htmlspecialchars($studium['price_per_hour']); ?> BD</p>
     <p>Average Rating: <?php echo $average_rating; ?> / 5</p>
   </div>
-
+  <?php include 'reservation.php' ?>
   <?php include 'rating.php'; ?>
   <?php include 'comment.php'; ?>
 </body>

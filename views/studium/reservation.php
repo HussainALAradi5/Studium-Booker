@@ -1,105 +1,140 @@
 <?php
+require_once './auth/security.php'; // Include security functions
+require_once './model/studium.php'; // Studium model
+require_once './model/reservation.php';
 
-function is_studium_reserved($studium_id, $start_at, $end_at)
-{
-  global $pdo;
+// Validate user authentication
+$is_logged_in = false;
+$user_id = null;
 
-  $sql = "SELECT COUNT(*)
-FROM reservation
-WHERE studium_id = ?
-AND (
-(start_at <= ? AND end_at> ?) OR
-  (start_at < ? AND end_at>= ?)
-    )";
-
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$studium_id, $end_at, $start_at, $end_at, $start_at]);
-  return $stmt->fetchColumn() > 0; // Returns true if a conflict exists
-}
-
-function get_available_studiums($start_at, $end_at)
-{
-  global $pdo;
-
-  $all_studiums = view_studiums(); // Reuse the `view_studiums` function
-  $available_studiums = [];
-
-  foreach ($all_studiums as $studium) {
-    if (!is_studium_reserved($studium['studium_id'], $start_at, $end_at)) {
-      $available_studiums[] = $studium;
-    }
-  }
-
-  return $available_studiums; // Return studiums that are free during the given period
-}
-function get_studium_occupant($studium_id, $start_at, $end_at)
-{
-  global $pdo;
-
-  $sql = "SELECT user_id 
-            FROM reservation 
-            WHERE studium_id = ? 
-            AND (
-                (start_at <= ? AND end_at > ?) OR 
-                (start_at < ? AND end_at >= ?)
-            )";
-
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$studium_id, $end_at, $start_at, $end_at, $start_at]);
-
-  $result = $stmt->fetch(PDO::FETCH_ASSOC);
-  return $result ? $result['user_id'] : null; // Return user_id or null if not occupied
-}
-function calculate_total_price($price_per_hour, $total_hours)
-{
-  return $price_per_hour * $total_hours;
-}
-function calculate_total_hours($start_at, $end_at)
-{
-  $start = new DateTime($start_at);
-  $end = new DateTime($end_at);
-
-  $interval = $start->diff($end);
-  return ($interval->days * 24) + $interval->h + ($interval->i > 0 ? 1 : 0); // Add 1 for partial hours
-}
-function reserve_studium($studium_id, $start_at, $end_at)
-{
-  global $pdo;
-
-  // Validate that the user is logged in
+try {
   $user_id = validate_user_logged_in();
-
-  // Secure inputs
-  $studium_id = secure_input($studium_id);
-  $start_at = secure_input($start_at);
-  $end_at = secure_input($end_at);
-
-  // Check if the user already has a reservation during this time
-  $user_reservation = get_studium_occupant($studium_id, $start_at, $end_at);
-  if ($user_reservation && $user_reservation === $user_id) {
-    return ['success' => false, 'message' => 'You already have a reservation during this time.'];
-  }
-
-  // Check if the studium is already reserved
-  if (is_studium_reserved($studium_id, $start_at, $end_at)) {
-    return ['success' => false, 'message' => 'Studium is already reserved during this time.'];
-  }
-
-  // Retrieve the studium details
-  $studium = view_studium($studium_id); // Assuming `view_studium` retrieves a single studium by ID
-  if (!$studium) {
-    return ['success' => false, 'message' => 'Invalid studium ID.'];
-  }
-
-  // Calculate the total hours and price
-  $total_hours = calculate_total_hours($start_at, $end_at);
-  $total_price = calculate_total_price($studium['price_per_hour'], $total_hours);
-
-  // Insert the reservation into the database
-  $sql = "INSERT INTO reservation (user_id, studium_id, start_at, end_at, total_hours, price_per_hour, total_price) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)";
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute([$user_id, $studium_id, $start_at, $end_at, $total_hours, $studium['price_per_hour'], $total_price]);
-
-  return ['success' => true, 'message' => 'Reservation successful.'];
+  $is_logged_in = true;
+} catch (Exception $e) {
+  // User not logged in
 }
+
+// Fetch available studiums based on current and future date/time range
+$current_date = date('Y-m-d H:i:s');
+$future_date = date('Y-m-d H:i:s', strtotime('+2 hours')); // Example: next 2 hours
+
+$available_studiums = get_available_studiums($current_date, $future_date);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studium Reservation</title>
+  <link rel="stylesheet" href="/css/reservation.css?v=<?php echo time(); ?>">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+  <div class="reservation-container">
+    <h1>Reserve a Studium</h1>
+
+    <?php if ($is_logged_in): ?>
+      <div class="availability-section">
+        <h2>Available Studiums</h2>
+
+        <!-- Reservation Form -->
+        <form id="reservation-form">
+          <label for="start-at">Start Time:</label>
+          <input type="datetime-local" id="start-at" name="start_at" value="<?php echo $current_date; ?>" required>
+          <label for="end-at">End Time:</label>
+          <input type="datetime-local" id="end-at" name="end_at" value="<?php echo $future_date; ?>" required>
+
+          <div id="reservation-info" class="reservation-info hidden">
+            <p id="cost-per-hour"></p>
+            <p id="total-price"></p>
+          </div>
+
+          <button type="submit" class="reserve-btn hidden">Reserve</button>
+        </form>
+
+        <ul id="available-studiums">
+          <?php foreach ($available_studiums as $studium): ?>
+            <li data-studium-id="<?php echo $studium['studium_id']; ?>" class="studium-item studium-available">
+              <span><?php echo htmlspecialchars($studium['studium_name']); ?> - <?php echo htmlspecialchars($studium['price_per_hour']); ?> BD/hour</span>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </div>
+    <?php else: ?>
+      <p>You must be logged in to reserve a studium. <a href="/login.php">Login here</a>.</p>
+    <?php endif; ?>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      // Function to calculate total price
+      function calculateTotalPrice(pricePerHour, totalHours) {
+        return pricePerHour * totalHours;
+      }
+
+      // Function to filter available studiums based on selected date/time
+      function filterStudiums() {
+        const startAt = $('#start-at').val();
+        const endAt = $('#end-at').val();
+
+        if (startAt && endAt) {
+          $('#available-studiums .studium-item').each(function() {
+            const studiumId = $(this).data('studium-id');
+            $(this).toggleClass('hidden', false); // Show all studiums as available initially
+          });
+
+          // Update reservation info
+          const studiumId = $('#available-studiums .studium-item').first().data('studium-id');
+          const pricePerHour = parseFloat($('#available-studiums li[data-studium-id="' + studiumId + '"] span').text().split('-')[1].trim().split(' ')[0]);
+          const totalHours = (new Date(endAt) - new Date(startAt)) / (1000 * 60 * 60);
+          const totalPrice = calculateTotalPrice(pricePerHour, totalHours);
+
+          $('#cost-per-hour').text(`Cost per Hour: ${pricePerHour} BD`);
+          $('#total-price').text(`Total Price: ${totalPrice.toFixed(2)} BD`);
+          $('#reservation-info').removeClass('hidden');
+          $('.reserve-btn').removeClass('hidden');
+        }
+      }
+
+      $('#start-at, #end-at').on('change', filterStudiums); // Apply filter when dates/times are changed
+
+      $('#reservation-form').on('submit', function(e) {
+        e.preventDefault(); // Prevent form submission
+
+        const studiumId = $('#available-studiums .studium-item').first().data('studium-id');
+        const startAt = $('#start-at').val();
+        const endAt = $('#end-at').val();
+
+        $.ajax({
+          url: '/views/studium/reservation.php',
+          type: 'POST',
+          data: {
+            action: 'reserve',
+            studium_id: studiumId,
+            start_at: startAt,
+            end_at: endAt
+          },
+          success: function(response) {
+            const data = JSON.parse(response);
+            alert(data.message);
+
+            if (data.success) {
+              // Remove reserved studium from the list
+              $(`li[data-studium-id="${studiumId}"]`).remove();
+              $('#reservation-info').addClass('hidden');
+              $('.reserve-btn').addClass('hidden');
+            }
+          },
+          error: function() {
+            alert('An error occurred while processing your request.');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
