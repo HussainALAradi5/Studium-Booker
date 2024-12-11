@@ -1,14 +1,14 @@
 <?php
 require_once './auth/security.php'; // Include security functions
 require_once './model/studium.php'; // Studium model
-require_once './model/reservation.php';
+require_once './model/reservation.php'; // Reservation model
 
 // Validate user authentication
 $is_logged_in = false;
 $user_id = null;
 
 try {
-  $user_id = validate_user_logged_in();
+  $user_id = validate_user_logged_in(); // Use the user validation function
   $is_logged_in = true;
 } catch (Exception $e) {
   // User not logged in
@@ -109,7 +109,7 @@ $available_studiums = get_available_studiums($current_date, $future_date);
         const endAt = $('#end-at').val();
 
         $.ajax({
-          url: '/views/studium/reservation.php',
+          url: './views/studium/reservation.php',
           type: 'POST',
           data: {
             action: 'reserve',
@@ -118,14 +118,19 @@ $available_studiums = get_available_studiums($current_date, $future_date);
             end_at: endAt
           },
           success: function(response) {
-            const data = JSON.parse(response);
-            alert(data.message);
+            try {
+              const data = JSON.parse(response);
+              alert(data.message);
 
-            if (data.success) {
-              // Remove reserved studium from the list
-              $(`li[data-studium-id="${studiumId}"]`).remove();
-              $('#reservation-info').addClass('hidden');
-              $('.reserve-btn').addClass('hidden');
+              if (data.success) {
+                // Remove reserved studium from the list
+                $(`li[data-studium-id="${studiumId}"]`).remove();
+                $('#reservation-info').addClass('hidden');
+                $('.reserve-btn').addClass('hidden');
+              }
+            } catch (error) {
+              console.error('JSON Parsing Error:', error);
+              alert('An error occurred while processing the reservation.');
             }
           },
           error: function() {

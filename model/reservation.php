@@ -32,6 +32,7 @@ function get_available_studiums($start_at, $end_at)
 
   return $available_studiums; // Return studiums that are free during the given period
 }
+
 function get_studium_occupant($studium_id, $start_at, $end_at)
 {
   global $pdo;
@@ -50,10 +51,12 @@ function get_studium_occupant($studium_id, $start_at, $end_at)
   $result = $stmt->fetch(PDO::FETCH_ASSOC);
   return $result ? $result['user_id'] : null; // Return user_id or null if not occupied
 }
+
 function calculate_total_price($price_per_hour, $total_hours)
 {
   return $price_per_hour * $total_hours;
 }
+
 function calculate_total_hours($start_at, $end_at)
 {
   $start = new DateTime($start_at);
@@ -62,6 +65,7 @@ function calculate_total_hours($start_at, $end_at)
   $interval = $start->diff($end);
   return ($interval->days * 24) + $interval->h + ($interval->i > 0 ? 1 : 0); // Add 1 for partial hours
 }
+
 function reserve_studium($studium_id, $start_at, $end_at)
 {
   global $pdo;
