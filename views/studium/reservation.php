@@ -29,6 +29,8 @@ $available_studiums = get_available_studiums($current_date, $future_date);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Studium Reservation</title>
   <link rel="stylesheet" href="/css/reservation.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -42,10 +44,8 @@ $available_studiums = get_available_studiums($current_date, $future_date);
 
         <!-- Reservation Form -->
         <form id="reservation-form">
-          <label for="start-at">Start Time:</label>
-          <input type="datetime-local" id="start-at" name="start_at" value="<?php echo $current_date; ?>" required>
-          <label for="end-at">End Time:</label>
-          <input type="datetime-local" id="end-at" name="end_at" value="<?php echo $future_date; ?>" required>
+          <label for="daterange">Select Date Range:</label>
+          <input type="text" id="daterange" class="calendar-input" required>
 
           <div id="reservation-info" class="reservation-info hidden">
             <p id="cost-per-hour"></p>
@@ -70,15 +70,24 @@ $available_studiums = get_available_studiums($current_date, $future_date);
 
   <script>
     $(document).ready(function() {
+      // Initialize Flatpickr for Date Range Selection
+      flatpickr("#daterange", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr, instance) {
+          // Apply filter when date range is selected
+          filterStudiums(dateStr.split(' to '));
+        }
+      });
+
       // Function to calculate total price
       function calculateTotalPrice(pricePerHour, totalHours) {
         return pricePerHour * totalHours;
       }
 
       // Function to filter available studiums based on selected date/time
-      function filterStudiums() {
-        const startAt = $('#start-at').val();
-        const endAt = $('#end-at').val();
+      function filterStudiums(dateRange) {
+        const [startAt, endAt] = dateRange;
 
         if (startAt && endAt) {
           $('#available-studiums .studium-item').each(function() {
@@ -99,14 +108,11 @@ $available_studiums = get_available_studiums($current_date, $future_date);
         }
       }
 
-      $('#start-at, #end-at').on('change', filterStudiums); // Apply filter when dates/times are changed
-
       $('#reservation-form').on('submit', function(e) {
         e.preventDefault(); // Prevent form submission
 
         const studiumId = $('#available-studiums .studium-item').first().data('studium-id');
-        const startAt = $('#start-at').val();
-        const endAt = $('#end-at').val();
+        const daterange = $('#daterange').val().split(' to ');
 
         $.ajax({
           url: './views/studium/reservation.php',
@@ -114,8 +120,8 @@ $available_studiums = get_available_studiums($current_date, $future_date);
           data: {
             action: 'reserve',
             studium_id: studiumId,
-            start_at: startAt,
-            end_at: endAt
+            start_at: daterange[0],
+            end_at: daterange[1]
           },
           success: function(response) {
             try {
