@@ -1,0 +1,60 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+.reservation-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+h1 {
+  text-align: center;
+}
+
+.availability-section {
+  margin-top: 20px;
+}
+
+#daterange {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+}
+
+.reservation-info {
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}
+
+.studium-item {
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 5px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.studium-available {
+  background-color: #e0ffe0;
+}
+
+.reserve-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: royalblue;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reserve-btn:hover {
+  background-color: #004d99;
+}
