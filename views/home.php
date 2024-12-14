@@ -5,12 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
-  <!-- Include Bootstrap CSS for styling -->
 </head>
 
 <body>
 
-  <!-- Header -->
 
   <div class="container mt-4">
     <?php
@@ -31,9 +29,9 @@
       <div class="col-md-12">
         <div class="card-deck">
           <?php
-          $studiums = view_studiums(); // Get all studiums
+          $studiums = view_studiums(); 
           foreach ($studiums as $studium) {
-            $average_rating = get_average_rating($studium['studium_id']); // Get average rating
+            $average_rating = get_average_rating($studium['studium_id']); 
             echo "<div class='card mb-4'>";
             echo "<div class='card-body'>";
             echo "<h5 class='card-title'>" . htmlspecialchars($studium['studium_name']) . "</h5>";
