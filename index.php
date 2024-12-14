@@ -1,5 +1,5 @@
 <?php
-require_once('./views/headers.php');
+require_once('./views/headers.php'); // Include header once for cleaner code
 
 // Handle actions (by default, show home page)
 $action = $_GET['action'] ?? 'home';
@@ -77,7 +77,6 @@ switch ($action) {
     exit;
 
   case 'home':
-    // Default case to load the home page
   default:
     include 'views/home.php'; // Show home page by default
     break;
@@ -90,9 +89,9 @@ switch ($action) {
       exit;
     }
 
-
     include 'views/studium/add_studium.php'; // Include the form to add a studium
     break;
+
   case 'studium':
     // Get the studium ID from the query parameters
     $studium_id = $_GET['id'] ?? null;
@@ -117,6 +116,7 @@ switch ($action) {
     include './views/studium/studium.php';
     break;
 }
-
 ?>
-<?php include('./views/footer.php'); ?>
+
+<?php include('./views/footer.php'); // Include footer once for cleaner code 
+?>

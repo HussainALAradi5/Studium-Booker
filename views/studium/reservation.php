@@ -111,6 +111,13 @@ $available_studiums = get_available_studiums($current_date, $future_date);
         const studiumId = $('#available-studiums .studium-item').first().data('studium-id');
         const daterange = $('#daterange').val().split(' to ');
 
+        console.log('Form Data:', {
+          action: 'reserve',
+          studium_id: studiumId,
+          start_at: daterange[0],
+          end_at: daterange[1]
+        });
+
         $.ajax({
           url: 'index.php?action=reservation.php',
           type: 'POST',
@@ -121,6 +128,7 @@ $available_studiums = get_available_studiums($current_date, $future_date);
             end_at: daterange[1]
           },
           success: function(response) {
+            console.log('Response:', response);
             try {
               const data = JSON.parse(response);
               alert(data.message);
