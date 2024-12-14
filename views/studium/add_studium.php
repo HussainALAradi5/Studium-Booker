@@ -1,6 +1,5 @@
 <?php
 // Ensure the user is logged in and is an admin
-require_once 'auth/security.php';
 if (!isset($_COOKIE['user_id']) || $_COOKIE['is_admin'] != 1) {
   // Redirect non-admin users away from this page
   header("Location: index.php?action=home");

@@ -12,7 +12,6 @@
 <body>
   <?php
   // Include the user model to access the get_user_details function
-  require_once './model/user.php';
 
   // Check if user is logged in
   if (isset($_COOKIE['user_id'])) {

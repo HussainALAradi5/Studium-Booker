@@ -1,3 +1,13 @@
+<?php
+
+require_once './model/user.php';
+require_once './auth/security.php';
+require_once './model/reservation.php';
+require_once './model/studium.php'; // Include model to fetch studium details
+require_once './model/rating.php'; // Include model to fetch ratings
+require_once './model/comment.php'; // Include model to fetch comments
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

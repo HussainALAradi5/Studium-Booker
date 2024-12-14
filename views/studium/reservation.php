@@ -1,7 +1,5 @@
 <?php
-require_once './auth/security.php'; // Include security functions
-require_once './model/studium.php'; // Studium model
-require_once './model/reservation.php'; // Reservation model
+
 
 // Validate user authentication
 $is_logged_in = false;
@@ -63,8 +61,7 @@ $available_studiums = get_available_studiums($current_date, $future_date);
           <?php endforeach; ?>
         </ul>
       </div>
-    <?php else: ?>
-      <p>You must be logged in to reserve a studium. <a href="/login.php">Login here</a>.</p>
+
     <?php endif; ?>
   </div>
 

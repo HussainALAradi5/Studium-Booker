@@ -1,8 +1,5 @@
 <?php
-require_once './auth/security.php'; // Include security functions
-require_once './model/studium.php'; // Studium model
-require_once './model/rating.php'; // Rating model
-require_once './model/comment.php'; // Comment model
+
 
 // Fetch and validate studium ID from the URL
 $studium_id = $_GET['id'] ?? null;
