@@ -1,6 +1,5 @@
 <?php
 
-
 // Validate user authentication
 $is_logged_in = false;
 $user_id = null;
@@ -26,42 +25,53 @@ $available_studiums = get_available_studiums($current_date, $future_date);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Studium Reservation</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="./css/reservation.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    .calendar-input {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    .reservation-info {
+      text-align: center;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="reservation-container">
-    <h1>Reserve a Studium</h1>
+  <div class="container mt-5">
+    <h1 class="text-center mb-4">Reserve a Studium</h1>
 
     <?php if ($is_logged_in): ?>
       <div class="availability-section">
-        <h2>Available Studiums</h2>
+        <h2 class="mb-3">Available Studiums</h2>
 
         <!-- Reservation Form -->
-        <form id="reservation-form">
+        <form id="reservation-form" class="form-group">
           <label for="daterange">Select Date Range:</label>
-          <input type="text" id="daterange" class="calendar-input" required>
+          <input type="text" id="daterange" class="form-control calendar-input" required>
 
           <div id="reservation-info" class="reservation-info hidden">
             <p id="cost-per-hour"></p>
             <p id="total-price"></p>
           </div>
 
-          <button type="submit" class="reserve-btn hidden">Reserve</button>
+          <button type="submit" class="btn btn-primary mt-3 hidden">Reserve</button>
         </form>
 
-        <ul id="available-studiums">
+        <ul id="available-studiums" class="list-group mt-3">
           <?php foreach ($available_studiums as $studium): ?>
-            <li data-studium-id="<?php echo $studium['studium_id']; ?>" class="studium-item studium-available">
+            <li data-studium-id="<?php echo $studium['studium_id']; ?>" class="list-group-item">
               <span><?php echo htmlspecialchars($studium['studium_name']); ?> - <?php echo htmlspecialchars($studium['price_per_hour']); ?> BD/hour</span>
             </li>
           <?php endforeach; ?>
         </ul>
       </div>
-
     <?php endif; ?>
   </div>
 
@@ -87,13 +97,13 @@ $available_studiums = get_available_studiums($current_date, $future_date);
         const [startAt, endAt] = dateRange;
 
         if (startAt && endAt) {
-          $('#available-studiums .studium-item').each(function() {
+          $('#available-studiums .list-group-item').each(function() {
             const studiumId = $(this).data('studium-id');
             $(this).toggleClass('hidden', false); // Show all studiums as available initially
           });
 
           // Update reservation info
-          const studiumId = $('#available-studiums .studium-item').first().data('studium-id');
+          const studiumId = $('#available-studiums .list-group-item').first().data('studium-id');
           const pricePerHour = parseFloat($('#available-studiums li[data-studium-id="' + studiumId + '"] span').text().split('-')[1].trim().split(' ')[0]);
           const totalHours = (new Date(endAt) - new Date(startAt)) / (1000 * 60 * 60);
           const totalPrice = calculateTotalPrice(pricePerHour, totalHours);
@@ -108,15 +118,8 @@ $available_studiums = get_available_studiums($current_date, $future_date);
       $('#reservation-form').on('submit', function(e) {
         e.preventDefault(); // Prevent form submission
 
-        const studiumId = $('#available-studiums .studium-item').first().data('studium-id');
+        const studiumId = $('#available-studiums .list-group-item').first().data('studium-id');
         const daterange = $('#daterange').val().split(' to ');
-
-        console.log('Form Data:', {
-          action: 'reserve',
-          studium_id: studiumId,
-          start_at: daterange[0],
-          end_at: daterange[1]
-        });
 
         $.ajax({
           url: 'index.php?action=reservation.php',
@@ -128,7 +131,6 @@ $available_studiums = get_available_studiums($current_date, $future_date);
             end_at: daterange[1]
           },
           success: function(response) {
-            console.log('Response:', response);
             try {
               const data = JSON.parse(response);
               alert(data.message);

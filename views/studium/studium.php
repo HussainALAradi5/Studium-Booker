@@ -1,6 +1,4 @@
 <?php
-
-
 // Fetch and validate studium ID from the URL
 $studium_id = $_GET['id'] ?? null;
 if (!$studium_id || !($studium = view_studium($studium_id))) {
@@ -59,20 +57,48 @@ $has_rated = $user_rating !== false;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title><?php echo htmlspecialchars($studium['studium_name']); ?> - Details</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/studium.css?v=<?php echo time(); ?>">
+  <style>
+    .star-rating {
+      color: #ffc107;
+      /* Change star color */
+    }
 
+    .card-body {
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
-  <div class="studium-details">
-    <h1><?php echo htmlspecialchars($studium['studium_name']); ?></h1>
-    <p>Location: <?php echo htmlspecialchars($studium['location']); ?></p>
-    <p>Price per hour: <?php echo htmlspecialchars($studium['price_per_hour']); ?> BD</p>
-    <p>Average Rating: <?php echo $average_rating; ?> / 5</p>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 mb-5">
+        <div class="card mb-4">
+          <div class="card-body">
+            <h1 class="card-title"><?php echo htmlspecialchars($studium['studium_name']); ?></h1>
+            <p class="card-text">Location: <?php echo htmlspecialchars($studium['location']); ?></p>
+            <p class="card-text">Price per hour: <?php echo htmlspecialchars($studium['price_per_hour']); ?> BD</p>
+            <div class="text-center mb-3">
+              <h5>Average Rating:
+                <?php for ($i = 0; $i < 5; $i++): ?>
+                  <span class="bi <?php echo $i < $average_rating ? 'bi-star-fill star-rating' : 'bi-star star-rating'; ?>"></span>
+                <?php endfor; ?>
+              </h5>
+            </div>
+
+            <?php include 'reservation.php'; ?>
+            <?php include 'rating.php'; ?>
+            <?php include 'comment.php'; ?>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <?php include 'reservation.php' ?>
-  <?php include 'rating.php'; ?>
-  <?php include 'comment.php'; ?>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
