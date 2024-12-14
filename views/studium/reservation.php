@@ -112,7 +112,7 @@ $available_studiums = get_available_studiums($current_date, $future_date);
         const daterange = $('#daterange').val().split(' to ');
 
         $.ajax({
-          url: './views/studium/reservation.php',
+          url: 'index.php?action=reservation.php',
           type: 'POST',
           data: {
             action: 'reserve',
