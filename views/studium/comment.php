@@ -1,7 +1,7 @@
 <h2>Comments</h2>
 <?php if (!$is_logged_in): ?>
   <div class="alert alert-warning">
-    <h2 id="log_par">Log in to comment.</h2>
+    <h2 id="log_par">You have to sign in to comment !</h2>
   </div>
 <?php elseif ($is_logged_in && $user_comment): ?>
   <div class="alert alert-info">

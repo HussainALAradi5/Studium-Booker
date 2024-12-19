@@ -2,10 +2,9 @@
 require_once './model/user.php';
 require_once './auth/security.php';
 require_once './model/reservation.php';
-require_once './model/studium.php'; // Include model to fetch studium details
-require_once './model/rating.php'; // Include model to fetch ratings
-require_once './model/comment.php'; // Include model to fetch comments
-?>
+require_once './model/studium.php';
+require_once './model/rating.php';
+require_once './model/comment.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,15 +12,14 @@ require_once './model/comment.php'; // Include model to fetch comments
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Website</title>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <title>Studium Booker</title>
   <link rel="stylesheet" href="css/nav_bar.css">
 </head>
 
 <body>
   <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="index.php?action=home">Your Website</a>
+      <a class="navbar-brand" href="index.php?action=home">Studium Booker</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
         aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -45,11 +43,9 @@ require_once './model/comment.php'; // Include model to fetch comments
     </nav>
   </header>
 
-  <!-- Your other content goes here -->
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
 </body>
 
 </html>
